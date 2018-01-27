@@ -37,7 +37,14 @@ L.attributes = function(attributeString){
   return this.attributes
 }
 
-L.attribs = L.attributes // a shorter reference
+L.attribs = function(attributeString){
+  const assignmentPosition = attributeString.indexOf('=')
+  const attribute = attributeString.slice(0, assignmentPosition)
+  const value = attributeString.slice(assignmentPosition + 1)
+  this.setAttribute(attribute, value)
+  
+  return this.attribs
+}
 
 L.attachAllElementsById = function(here){
   let allElements = document.getElementsByTagName('*')
