@@ -1,7 +1,7 @@
 /*
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: ~ January 10, 2018 
+  Revised: January 26, 2018 
   Original Filename: L.js 
   Purpose: a small personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -14,7 +14,8 @@
          3.) the index of the file in the "array" of files being uploaded
          
       Added sortByExtension that alphabetizes an array of strings 'in place' by filename extension          
-      Added arrayStringMatch that matches a collection of string arrays to a search string.         
+      Added arrayStringMatch that matches a collection of string arrays to a search string.
+      Added attribs method to elements as alternative to attributes method as a shortened form.
 */
 
 var L = {}
@@ -45,7 +46,8 @@ L.attachAllElementsById = function(here){
       if(element.id){
           here[element.id] = element
           element.styles = L.styles.bind(element) // attach L's styles() method here
-          element.attributes = L.attributes.bind(element) // attach L's atributes() method here
+          element.attributes = L.attributes.bind(element) // attach L's attributes() method here
+          element.attribs = L.attribs.bind(element) // attach L's attribs() method here          
       }
   })
 }
