@@ -1,0 +1,72 @@
+#! /usr/bin/env bash
+#############################
+#
+#  Author: Abbas Abdulmalik
+#  Created: March 18, 2016
+#  Revised: January 26, 2017 
+#  Original Filename: apmGlitch
+#  Purpose: download JS modules from my Github modules repo
+#  Notes: Will allow my rekwire function to load my  modules
+#         from the local modules directory.
+##         1.) A file with any filename extention can be retrieved
+#         2.) If the extension is omitted, it is assumed to be .js
+#
+#############################
+BASE="https://sabbakilam.github.io/modules/"
+if [ "$1" = "" ];
+ then
+  clear
+  echo
+  echo You must provide the name of the remote JS module.
+  echo Example: $(basename $0) mymodule
+  echo "(this gets the remote file mymodule.js)"
+  echo
+  exit 1
+fi
+  echo 
+  echo "Base path is ${BASE}" 
+if [[ ! -d "modules" && ! -f "modules"  ]];
+ then
+  echo "making modules directory"
+   mkdir modules
+   chown $(whoami) modules
+   chgrp $(whoami) modules
+  echo
+fi
+if [ -f "modules" ];
+ then
+  echo
+  echo "You have a 'modules' file, so can't make modules directory."
+  echo
+  exit 1
+fi
+##############| add filename extentions for js files |#############
+rm temp 2>/dev/null
+for ARG in $@;  
+  do
+   echo ${ARG} | grep -Ev --color=auto "\..{1,}$"  >> temp
+  done
+
+rm finalnames 2>/dev/null
+for NAME in $(cat temp);
+ do 
+  echo ${NAME}.js >> finalnames
+ done
+
+for ARG in $@;
+ do
+  echo ${ARG} | grep -E "\..{1,}$" >> finalnames
+ done 
+cat finalnames
+##############| done adding filename extentions |##################
+for MODULE in $(cat finalnames);
+ do
+   wget -O modules/${MODULE} "${BASE}${MODULE}"
+  if [ $? -ne 0 ];
+   then  rm modules/${MODULE}
+  fi
+   chown $(whoami) modules/${MODULE} 2>/dev/null
+   chgrp $(whoami) modules/${MODULE} 2>/dev/null  
+ done
+ rm finalnames 2>/dev/null
+ rm temp 2>/dev/null
