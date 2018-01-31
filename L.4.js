@@ -99,19 +99,8 @@ L.runQualifiedMethods = function(functionQualifiers, object, runNextUpdate){
   }
 }
 
-/**
-  Use a php script to read contents of file from $_POST['contents'] that was converted by client
-  as DataURL, and expects filename and uploadPath from: $_POST['filename'] and $_POST['uploadPath']
-  with trailing slash (/) provided by client (though script could check for this).
-  
-  doneCounter is used to signal sending (1,1,index) to progressReporter to show:
-    a. that all files have been uploaded
-    b. which file (by the index number) was the last to upload completely
-*/
-L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPath='../uploads/'){
-  let doneCounter = 0
-  let fileCount = fileElement.files.length
-  const array = [] // make a real array to borrow it's forEach method using 'call'
+L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPath='uploads/'){
+  const array = [] // make a real array to borrow it's forEach method
   array.forEach.call(fileElement.files, (file, index) => {
     const postman = new XMLHttpRequest() // make a file deliverer for each file
     const uploadObject = postman.upload // This object keeps track of upload progress
@@ -124,28 +113,19 @@ L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPat
       const contents = reader.result // collect the result, and ...
       envelope.stuff('contents', contents) // place it in the envelope along with ...
       envelope.stuff('filename', file.name) // its filename
-      envelope.stuff('uploadPath', uploadPath) // its upload path on the server
+      envelope.stuff('path', uploadPath) // its upload path on the server
       
       postman.open(`POST`, phpScriptName)// open up a POST to the server's php script
       postman.send(envelope) // send the file
       
       //check when file loads and when there is an error
       postman.onload = eventObject => {
-        postman.status !== 200 ? showMessage() : checkLastFileDone()
-        //-----| helpers |------//
+        postman.status !== 200 ? showMessage() : false
+        //-----| helper |------//
         function showMessage(){
           const message = `Trouble with file: ${postman.status}`
           console.log(message)
           alert(message)
-        }
-        
-        function checkLastFileDone(){
-          doneCounter++          
-          if(typeof progressReporter === 'function'){
-            if(doneCounter === fileCount){
-              progressReporter(1, 1, index)              
-            }
-          }          
         }
       }
       
@@ -164,7 +144,6 @@ L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPat
     }
   })
 }
-
 //---------------------------------------------------------//
 /**
   Given an array of strings (array), sorts the array 'in place' by filename EXTENSION,
@@ -172,13 +151,10 @@ L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPat
   functionistic (but it functions).
 */
 L.sortByExtension = function (array) {
-  //two 'bouncers':
-  //1. 'array' must be an actual array
   const type = {}.toString.call(array, null);
   if (type !== '[object Array]') {
     return array;
   }
-  //2. 'array' must not be empty, and must contain only strings
   if (array.length === 0 || array.some(member => typeof member !== 'string')) {
     return array;
   }
@@ -210,25 +186,24 @@ L.sortByExtension = function (array) {
   
   return newArray;
 }
-//----------------------------------------------//
 
-
-/*
-From an array of string arrays, return a possibly smaller array
-of only those string arrays whose member strings contain the given subString
-regardless of case.
-   1. For arrayOfStringArrays, use the filter method (a function property of an array)
-   that expects a function argument that operates on each array member
-   2. Let's call the function argument 'match'
-   3. 'match' should test each member array for a match of the substring as follows:
-    a.) join the members strings together into a bigString that is lowerCased
-    b.) lowerCase the subString
-    c.) use indexOf to match substring to the bigString
-    d.) return true for a match, otherwise return false
-   4. the filter creates a new array after doing this.
-   5. final step: return the new array that the filter produced 
-*/
 L.arrayStringMatch = function(subString, arrayOfStringArrays){
+  /*
+  From an array of string arrays, return a possibly smaller array
+  of only those string arrays whose member strings contain the given subString
+  regardless of case.
+     1. For arrayOfStringArrays, use the filter method (a function property of an array)
+     that expects a function argument that operates on each array member
+     2. Let's call the function argument 'match'
+     3. 'match' should test each member array for a match of the substring as follows:
+      a.) join the members strings together into a bigString that is lowerCased
+      b.) lowerCase the subString
+      c.) use indexOf to match substring to the bigString
+      d.) return true for a match, otherwise return false
+     4. the filter creates a new array after doing this.
+     5. final step: return the new array that the filter produced 
+  */
+  //============================================================//
   return arrayOfStringArrays.filter(match)
   //-------| Helper function 'match' |---------//
   function match(memberArray){
