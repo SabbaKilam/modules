@@ -1,4 +1,4 @@
-/*
+/**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
   Revised: ~ February 24, 2018 
@@ -37,7 +37,14 @@ L.attributes = function(attributeString){
   return this.attributes
 }
 
-L.attribs = L.attributes // a shorter reference
+L.attribs = function(attributeString){
+  const assignmentPosition = attributeString.indexOf('=')
+  const attribute = attributeString.slice(0, assignmentPosition)
+  const value = attributeString.slice(assignmentPosition + 1)
+  this.setAttribute(attribute, value)
+  
+  return this.attribs
+}
 
 L.attachAllElementsById = function(here){
   let allElements = document.getElementsByTagName('*')
@@ -46,7 +53,8 @@ L.attachAllElementsById = function(here){
       if(element.id){
           here[element.id] = element
           element.styles = L.styles.bind(element) // attach L's styles() method here
-          element.attributes = L.attributes.bind(element) // attach L's atributes() method here
+          element.attributes = L.attributes.bind(element) // attach L's attributes() method here
+          element.attribs = L.attribs.bind(element) // attach L's attribs() method here
       }
   })
 }
@@ -180,7 +188,7 @@ L.sortByExtension = function (array) {
 }
 
 L.arrayStringMatch = function(subString, arrayOfStringArrays){
-  /*
+  /**
   From an array of string arrays, return a possibly smaller array
   of only those string arrays whose member strings contain the given subString
   regardless of case.
