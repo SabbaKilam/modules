@@ -223,7 +223,7 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
     
   Such a test should be done early in the callback while stopLoop is still defined within the closure scope.
   Also, any code in the callback that depends on stopLoop should be enclosed in a try...catch block
-  for the time that stopLoop becomes undefined.
+  for the time when stopLoop becomes undefined.
 */
 L.loopCall = function (callback, delay, ...args){
     callback(...args)
