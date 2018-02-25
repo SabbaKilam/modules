@@ -229,9 +229,9 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
     setTimeout("L.loopCall(callback, delay, arg1, arg2 ...)", delay) 
     //Doug Crockford would not be pleased  
   
-  Taking advantage of the fact that a function is an object, the timer id is added as
-  the property 'stopLoop' of L.loopCall itself. L.loopCall.stopLoop can be used
-  by the callback to stop the loop by using it as the argument of the clearTimeout function.
+  Taking advantage of the fact that a function is an object, the current timer id is added as
+  the property 'stopLoop' of the L.loopCall function. L.loopCall.stopLoop can be used
+  by the callback (using clearTimeout) to stop the otherwise perpetual loop.
   
   To stop the loop, the callback function can test some external state condition,
   or test its own arguments, if they are passed by reference:
