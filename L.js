@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: ~ February 24, 2018 
+  Revised: ~ February 25, 2018 
   Original Filename: L.js 
   Purpose: a small personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -16,6 +16,7 @@
       Added sortByExtension that alphabetizes an array of strings 'in place' by filename extension          
       Added arrayStringMatch that matches a collection of string arrays to a search string.
       Added loopCall as a 'better' version of setInterval
+      Removed L.attributes. It's a reserved word: an object belonging to DOM elements
 */
 
 var L = {}
@@ -26,15 +27,6 @@ L.styles = function(styleString){
   this.style[property] = value
   
   return this.styles  
-}
-
-L.attributes = function(attributeString){
-  const assignmentPosition = attributeString.indexOf('=')
-  const attribute = attributeString.slice(0, assignmentPosition)
-  const value = attributeString.slice(assignmentPosition + 1)
-  this.setAttribute(attribute, value)
-  
-  return this.attributes
 }
 
 L.attribs = function(attributeString){
@@ -53,7 +45,6 @@ L.attachAllElementsById = function(here){
       if(element.id){
           here[element.id] = element
           element.styles = L.styles.bind(element) // attach L's styles() method here
-          element.attributes = L.attributes.bind(element) // attach L's attributes() method here
           element.attribs = L.attribs.bind(element) // attach L's attribs() method here
       }
   })
