@@ -217,16 +217,15 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
   that can be used by the callback to stop the loop by using it as the argument of clearInterval,
   otherwise, the loop is perpetual.
   
-  The callback function can test some external state condition to stop the loop:
+  The callback function can test some external state condition to stop the loop, such as:
+  
     if(externalStateCondition) clearInterval(stopLoop)
-  Such a test should be done early in the callback     
+    
+  Such a test should be done early in the callback. Also, any code in the callback that depends
+  on stopLoop should be enclosed in a try...catch block in case stopLoop becomes undefined.
 */
 L.loopCall = function (callback, delay, ...args){
-  try{
+    let stopLoop = null
   	setTimeout(callback, delay, ...args)
-  	let stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)    
-  }
-  catch(error){
-    
-  }
+  	stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)
 }
