@@ -226,6 +226,6 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
   in case stopLoop becomes undefined.
 */
 L.loopCall = function (callback, delay, ...args){
-  	callback(...args)
-  	let stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)
+    callback(...args)
+  	let stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)  
 }
