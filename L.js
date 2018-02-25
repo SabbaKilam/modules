@@ -207,36 +207,38 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
 //-------------------------------------------------//
 
 /**
-  L.loopCall can be used to replace setInterval, which has been somewhat discredited. See this blog post:
+  L.loopCall can be used to replace setInterval, which has been somewhat discredited.
+  See this blog post:
+  https://dev.to/akanksha_9560/why-not-to-use-setinterval--2na9
+  
+  L.loopCall uses setTimeout recursively, which is a technique
+  reportedly more reliabale than setInterval.  
 
-      https://dev.to/akanksha_9560/why-not-to-use-setinterval--2na9
-      
-  L.loopCall repeatedly invokes (calls) the callback function provided as its first argument.
-  The intial call is immediate, but subsequent calls are delayed by the milliseconds
-  provided as the second argument. All additional arguments are optional to be used by the callback if required:
+  L.loopCall repeatedly calls (invokes) the callback function provided as its first argument.
+  The first call is immediate, but subsequent calls are delayed by the milliseconds
+  provided as the second argument. All additional arguments are optional
+  to be used by the callback if required.
   
-    L.loopCall(callback, delay, arg1, arg2) 
+  If needed, you can delay the initial call as well,
+  by having loopCall invoked by setTimeout using the same delay:
   
-  If needed, you can delay the initial call as well by having loopCall
-  invoked by asetTimeout with the same delay:
-  
-    setTimeout(L.loopCall, delay, callback, delay, arg1, arg2)
-    or the more risky
-    setTimeout("L.loopCall(callback, delay, arg1, arg2)", delay) //Doug Crockford would not be pleased
-  
-  Internally, L.loopCall uses setTimeout recursively, which is a technique
-  reportedly more reliabale than setInterval.
-  
-  The library variable 'L.stopLoop' is the timer ID, and can be used by the callback
-  to stop the loop by using the clearTimeout function, otherwise the loop is perpetual.
-  The callback function can test some external state condition to stop the loop, such as:
-  
-    if(externalStateCondition) clearTimeout(L.stopLoop)
+    setTimeout(L.loopCall, delay, callback, delay, arg1, arg2 ...)
     
-  Such a test should be done early in the callback as a race against the next loop cycle,
-  else you might experience an 'off-by-one-error.'
+    or the more readable, but more risky ...
+    
+    setTimeout("L.loopCall(callback, delay, arg1, arg2 ...)", delay) 
+    //Doug Crockford would not be pleased  
+  
+  Taking advantage of the fact that a function is an object, the timer id is added as
+  the property 'stopLoop' of L.loopCall itself. L.loopCall.stopLoop can be used
+  by the callback to stop the loop by using it as the argument of the clearTimeout function.
+  
+  To stop the loop, the callback function can test some external state condition,
+  or test its own arguments, if they are passed by reference:
+   
+    if(externalStateCondition) clearTimeout(L.loopCall.stopLoop)
 */
 L.loopCall = function (callback, delay, ...args){
-  	L.stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)   
-    callback(...args) 
+    L.loopCall.stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)   
+    callback(...args)
 }
