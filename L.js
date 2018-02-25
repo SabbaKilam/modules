@@ -205,27 +205,34 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
   }
 }
 //-------------------------------------------------//
+
 /**
-  loopCall repeatedly invokes (calls) the callback function provided as its first argument.
-  The first call is immediate, but subsequent calls are delayed by the milliseconds
-  provided as the second argument. All additional arguments are optional to be used by the callback if required.
+  L.loopCall repeatedly invokes (calls) the callback function provided as its first argument.
+  The intial call is immediate, but subsequent calls are delayed by the milliseconds
+  provided as the second argument. All additional arguments are optional to be used by the callback if required:
   
-  loopCall uses setTimeout recursively, which is a technique
+    L.loopCall(callback, delay, arg1, arg2) 
+  
+  If needed, you can delay the intial call as well by having loopCall
+  invoked by asetTimeout with the same delay:
+  
+    setTimeout(L.loopCall, delay, callback, delay, arg1, arg2)
+    or the more risky
+    setTimeout("L.loopCall(callback, delay, arg1, arg2)", delay) //Doug Crockford would not be pleased
+  
+  Internally, L.loopCall uses setTimeout recursively, which is a technique
   reportedly more reliabale than setInterval.
   
-  The closure variable 'stopLoop' is the timer ID, and can be used by the callback
-  to stop the loop by using it as the argument of the clearTimeout function,
-  otherwise the loop is perpetual.
-  
+  The library variable 'L.stopLoop' is the timer ID, and can be used by the callback
+  to stop the loop by using the clearTimeout function, otherwise the loop is perpetual.
   The callback function can test some external state condition to stop the loop, such as:
   
-    if(externalStateCondition) clearTimeout(stopLoop)
+    if(externalStateCondition) clearTimeout(L.stopLoop)
     
-  Such a test should be done early in the callback while stopLoop is still defined within the closure scope.
-  Also, any code in the callback that depends on stopLoop should be enclosed in a try...catch block
-  for the time when stopLoop becomes undefined.
+  Such a test should be done early in the callback as a race against the next loop cycle,
+  else you might experience an 'off-by-one-error.'
 */
 L.loopCall = function (callback, delay, ...args){
-    callback(...args)
-  	let stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)  
+  	L.stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)   
+    callback(...args) 
 }
