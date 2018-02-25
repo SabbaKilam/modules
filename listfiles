@@ -1,0 +1,14 @@
+#! /usr/bin/env bash
+#############################
+#
+#  Author: Abbas Abdulmalik
+#  Created: September 6, 2017
+#  Revised: (date) 
+#  Original Filename: listfiles
+#  Purpose: create a list of all files in the current (working) directory
+#  Notes: 
+#
+#############################
+ls -lap | grep -Eo "[^ ]*[^/]$" > filelist
+cp filelist filelist.txt
+less filelist
