@@ -215,5 +215,5 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
 */
 L.loopCall = function (callback, delay, ...args){
 	setTimeout(callback, delay, ...args)
-	let killLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)
+	setTimeout(L.loopCall, delay, callback, delay, ...args)
 }
