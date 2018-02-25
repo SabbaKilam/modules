@@ -214,12 +214,12 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
   reportedly more reliabale than setInterval.
   
   The closure variable 'stopLoop' is the timer ID, and can be used by the callback
-  to stop the loop by using it as the argument of the clearInterval function,
+  to stop the loop by using it as the argument of the clearTimeout function,
   otherwise the loop is perpetual.
   
   The callback function can test some external state condition to stop the loop, such as:
   
-    if(externalStateCondition) clearInterval(stopLoop)
+    if(externalStateCondition) clearTimeout(stopLoop)
     
   Such a test should be done early in the callback while stopLoop is still defined within the closure scope.
   Also, any code in the callback that depends on stopLoop should be enclosed in a try...catch block
