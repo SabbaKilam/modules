@@ -221,11 +221,11 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
   
     if(externalStateCondition) clearInterval(stopLoop)
     
-  Such a test should be done early in the callback. Also, any code in the callback that depends
-  on stopLoop should be enclosed in a try...catch block in case stopLoop becomes undefined.
+  Such a test should be done early in the callback while stopLoop is still defined within the closure scope.
+  Also, any code in the callback that depends on stopLoop should be enclosed in a try...catch block
+  in case stopLoop becomes undefined.
 */
 L.loopCall = function (callback, delay, ...args){
-    let stopLoop = null
-  	setTimeout(callback, delay, ...args)
-  	stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)
+  	callback(...args)
+  	let stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)
 }
