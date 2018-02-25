@@ -212,8 +212,21 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
   
   loopCall uses setTimeout recursively, which is a technique
   reportedly more reliabale than setInterval.
+  
+  The closure variable 'stopLoop' is the timer ID of the second timer
+  that can be used by the callback to stop the loop by using it as the argument of clearInterval,
+  otherwise, the loop is perpetual.
+  
+  The callback function can test some external state condition to stop the loop:
+    if(externalStateCondition) clearInterval(stopLoop)
+  Such a test should be done early in the callback     
 */
 L.loopCall = function (callback, delay, ...args){
-	setTimeout(callback, delay, ...args)
-	let killLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)
+  try{
+  	setTimeout(callback, delay, ...args)
+  	let stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)    
+  }
+  catch(error){
+    
+  }
 }
