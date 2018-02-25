@@ -206,16 +206,16 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
 }
 //-------------------------------------------------//
 /**
-  loopCall repeatedly invokes (calls) the callback function provided as its first argument,
-  delayed by the milliseconds provided as the second argument. All additional
-  arguments are optional to be used by the callback if required.
+  loopCall repeatedly invokes (calls) the callback function provided as its first argument.
+  The first call is immediate, but subsequent calls are delayed by the milliseconds
+  provided as the second argument. All additional arguments are optional to be used by the callback if required.
   
   loopCall uses setTimeout recursively, which is a technique
   reportedly more reliabale than setInterval.
   
-  The closure variable 'stopLoop' is the timer ID of the second timer
-  that can be used by the callback to stop the loop by using it as the argument of clearInterval,
-  otherwise, the loop is perpetual.
+  The closure variable 'stopLoop' is the timer ID, and can be used by the callback
+  to stop the loop by using it as the argument of the clearInterval function,
+  otherwise the loop is perpetual.
   
   The callback function can test some external state condition to stop the loop, such as:
   
@@ -223,7 +223,7 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
     
   Such a test should be done early in the callback while stopLoop is still defined within the closure scope.
   Also, any code in the callback that depends on stopLoop should be enclosed in a try...catch block
-  in case stopLoop becomes undefined.
+  for the time that stopLoop becomes undefined.
 */
 L.loopCall = function (callback, delay, ...args){
     callback(...args)
