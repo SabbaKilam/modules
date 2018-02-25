@@ -207,13 +207,17 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
 //-------------------------------------------------//
 
 /**
+  L.loopCall can be used to replace setInterval, which has been somewhat discredited. See this blog post:
+
+      https://dev.to/akanksha_9560/why-not-to-use-setinterval--2na9
+      
   L.loopCall repeatedly invokes (calls) the callback function provided as its first argument.
   The intial call is immediate, but subsequent calls are delayed by the milliseconds
   provided as the second argument. All additional arguments are optional to be used by the callback if required:
   
     L.loopCall(callback, delay, arg1, arg2) 
   
-  If needed, you can delay the intial call as well by having loopCall
+  If needed, you can delay the initial call as well by having loopCall
   invoked by asetTimeout with the same delay:
   
     setTimeout(L.loopCall, delay, callback, delay, arg1, arg2)
