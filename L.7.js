@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: March 5, 2018 
+  Revised: ~ February 25, 2018 
   Original Filename: L.js 
   Purpose: a small personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -17,8 +17,6 @@
       Added arrayStringMatch that matches a collection of string arrays to a search string.
       Added loopCall as a 'better' version of setInterval
       Removed L.attributes. It's a reserved word: an object belonging to DOM elements
-       Now it uses L.attribs
-      Added L.loopCall.stop() so that user can easily stop L.loopCall
 */
 
 var L = {}
@@ -229,20 +227,18 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays){
     
     setTimeout("L.loopCall(callback, delay, arg1, arg2 ...)", delay) 
     //Doug Crockford would not be pleased  
-
+  
+  Taking advantage of the fact that a function is an object, the current timer id is added as
+  the property 'stopLoop' of the L.loopCall function. L.loopCall.stopLoop can be used
+  by the callback (using clearTimeout) to stop the otherwise perpetual loop.
+  
   To stop the loop, the callback function can test some external state condition,
-  (or test its own arguments, if they are passed by reference):
+  or test its own arguments, if they are passed by reference:
    
-    if(externalStateCondition){
-      L.loopCall.stop()
-    }
+    if(externalStateCondition) clearTimeout(L.loopCall.stopLoop)
 */
 L.loopCall = function (callback, delay, ...args){
     L.loopCall.stopLoop = setTimeout(L.loopCall, delay, callback, delay, ...args)   
     callback(...args)
-}
-
-L.loopCall.stop = () => {
-  clearTimeout(L.loopCall.stopLoop)  
 }
 
