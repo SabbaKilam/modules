@@ -1,9 +1,9 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: March 19, 2018 
+  Revised: March 5, 2018 
   Original Filename: L.js 
-  Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
+  Purpose: a small personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
          UploadFiles added.
          uploadFiles takes a callback -- progressReporter-- as it FIRST argument (parameter)
@@ -19,8 +19,6 @@
       Removed L.attributes. It's a reserved word: an object belonging to DOM elements
        Now it uses L.attribs
       Added L.loopCall.stop() so that user can easily stop L.loopCall
-      Added L.symDiff for comparing arrays to determine their symmetric differnce = conjunctive union =
-       exclusive-or
 */
 
 var L = {}
@@ -247,79 +245,4 @@ L.loopCall = function (callback, delay, ...args){
 L.loopCall.stop = () => {
   clearTimeout(L.loopCall.stopLoop)  
 }
-
-/**
-  Returns an array that is the "mathematical or logical" symmetric difference among or between
-  any number of arrays provided as arguments (usually two). If the order of members is ignored
-  (as is done for mathematical sets), the result acts as the the exclusive-or (XOR), also know as
-  the disjunctive union. For the trivial cases of comparing one or two arrays, the result is
-  not surprising: for one array, the result is itself: L.symDiff(A, []) =>  A ⊕ [] = A. 
-  For two arrays, the result is an array that has only members which are not shared in common:
-  L.symDiff(A, B) => A ⊕ B .
-  When comparing more than two arrays, the result may ne surprising. The proper result can be verified 
-  by comparing only two at a time: L.symDiff(A, B, C) => A ⊕ B ⊕ C = (A ⊕ B) ⊕ C
-*/
-L.symDiff = function symDiff(arrayA, arrayB){ // dummy paramters NOT referenced in body of the function
-    var partialSymDiff = [],   
-        argsArray = arguments
-    ;
-    //============THE CRUX=================
-    return findSymDiff(partialSymDiff,0);
-    //============UNDER THE HOOD===========
-    function findSymDiff(partialSymDiff,index){
-        if (argsArray[index] === undefined){
-            return partialSymDiff;
-        }
-        else{
-            partialSymDiff = sd(partialSymDiff, argsArray[index] );
-            return findSymDiff( partialSymDiff, index + 1 );
-        }
-    }    
-    //=====================================
-    function sd(arrayI, arrayJ){
-        var diff = [],
-            blackList = [],
-            i = 0,
-            j = 0,
-            maxI = arrayI.length,
-            maxJ = arrayJ.length
-        ;
-        //-------------------------------------------------
-        //1.) Combine the arrays into a third array.
-        //2.) Find the matched elements and place them into a blacklist array.
-        //3.) Pull blacklisted elements from the combined array.
-        //4.) return the "reduced" combined array.
-        //---------------------------------------------------
-        // 1.) Combine the arrays into a third array.
-        diff = arrayI.concat(arrayJ);        
-        //---------------------------------------------------
-        // 2.) Find the matched elements and place them into a blacklist array.
-        for ( i=0; i < maxI; i++ ){
-            for( j=0; j< maxJ; j++ ){
-                if(arrayI[i] === arrayJ[j]){
-                    blackList.push(arrayI[i] );
-                }                
-            }  
-        }
-        //----------------------------------------------------
-        // 3.) Pull blacklisted elements from the combined array.
-            diff = diff.filter( (element) => blackList.indexOf(element) === -1 )
-        //----------------------------------------------------
-        // 4.) return the "reduced" combined array.        
-        return killDupes(diff);
-    }
-    //========================================================
-    function killDupes(array){
-        var kept = []; // Record of the "keepers"
-        return array.filter(function(element){
-            if ( kept.indexOf(element) === -1 ){ //if not already retained ...
-                kept.push(element); // Record it as retained now, and...
-                return true;  // allow this element to be kept (true)
-            }
-            else{
-                return false; // otherwise, don't keep it (already kept)
-            }
-        });
-    }      
-};
 
