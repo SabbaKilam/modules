@@ -94,14 +94,7 @@ L.runQualifiedMethods = function(functionQualifiers, object, runNextUpdate){
   }
 }
 
-/**
-  Use a php script that reads contents of file from $_POST['contents'] that was convert by client
-  as DataURL, and expects filename and uploadPath from: $_POST['filename'] and $_POST['uploadPath']
-  with trailing slash (/) provided by client (though script could check for this).  
-*/
-L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPath='../uploads/'){
-  let doneCounter = 0
-  let fileCount = fileElement.files.length
+L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPath='uploads/'){
   const array = [] // make a real array to borrow it's forEach method
   array.forEach.call(fileElement.files, (file, index) => {
     const postman = new XMLHttpRequest() // make a file deliverer for each file
@@ -115,27 +108,19 @@ L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPat
       const contents = reader.result // collect the result, and ...
       envelope.stuff('contents', contents) // place it in the envelope along with ...
       envelope.stuff('filename', file.name) // its filename
-      envelope.stuff('uploadPath', uploadPath) // its upload path on the server
+      envelope.stuff('path', uploadPath) // its upload path on the server
       
       postman.open(`POST`, phpScriptName)// open up a POST to the server's php script
       postman.send(envelope) // send the file
       
       //check when file loads and when there is an error
       postman.onload = eventObject => {
-        postman.status !== 200 ? showMessage() : checkLastFileDone()
+        postman.status !== 200 ? showMessage() : false
         //-----| helper |------//
         function showMessage(){
           const message = `Trouble with file: ${postman.status}`
           console.log(message)
           alert(message)
-        }
-        function checkLastFileDone(){
-          doneCounter++          
-          if(typeof progressReporter === 'function'){
-            if(doneCounter === fileCount){
-              progressReporter(1, 1, index)              
-            }
-          }          
         }
       }
       
@@ -154,7 +139,6 @@ L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPat
     }
   })
 }
-
 //---------------------------------------------------------//
 /**
   Given an array of strings (array), sorts the array 'in place' by filename EXTENSION,
