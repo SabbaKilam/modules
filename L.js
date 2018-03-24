@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: March 19, 2018 
+  Revised: March 24, 2018 
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -21,6 +21,7 @@
       Added L.loopCall.stop() so that user can easily stop L.loopCall
       Added L.symDiff for comparing arrays to determine their symmetric differnce = conjunctive union =
        exclusive-or
+      Restored an updated version of uploadFiles that signals the file uploaded 
 */
 
 var L = {}
@@ -80,7 +81,7 @@ L.runQualifiedMethods = function(functionQualifiers, object, runNextUpdate){
       object[functionName]()        
     }
    
-    /*
+    /**
       If the prefix of this function's name is 'set' (for updating the MODEL),
       and there is a similarly named function with a prefix of 'show' (for updating the VIEW),
       then run the 'show' version as well.
@@ -198,22 +199,22 @@ L.sortByExtension = function (array) {
   return newArray;
 }
 
+/**
+From an array of string arrays, return a possibly smaller array
+of only those string arrays whose member strings contain the given subString
+regardless of case.
+   1. For arrayOfStringArrays, use the filter method (a function property of an array)
+   that expects a function argument that operates on each array member
+   2. Let's call the function argument 'match'
+   3. 'match' should test each member array for a match of the substring as follows:
+    a.) join the members strings together into a bigString that is lowerCased
+    b.) lowerCase the subString
+    c.) use indexOf to match substring to the bigString
+    d.) return true for a match, otherwise return false
+   4. the filter creates a new array after doing this.
+   5. final step: return the new array that the filter produced 
+*/
 L.arrayStringMatch = function(subString, arrayOfStringArrays){
-  /**
-  From an array of string arrays, return a possibly smaller array
-  of only those string arrays whose member strings contain the given subString
-  regardless of case.
-     1. For arrayOfStringArrays, use the filter method (a function property of an array)
-     that expects a function argument that operates on each array member
-     2. Let's call the function argument 'match'
-     3. 'match' should test each member array for a match of the substring as follows:
-      a.) join the members strings together into a bigString that is lowerCased
-      b.) lowerCase the subString
-      c.) use indexOf to match substring to the bigString
-      d.) return true for a match, otherwise return false
-     4. the filter creates a new array after doing this.
-     5. final step: return the new array that the filter produced 
-  */
   //============================================================//
   return arrayOfStringArrays.filter(match)
   //-------| Helper function 'match' |---------//
