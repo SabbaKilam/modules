@@ -5,7 +5,8 @@
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
-         UploadFiles added.
+  
+      Added UploadFiles:
          uploadFiles takes a callback -- progressReporter-- as it FIRST argument (parameter)
          to allow for an optional fourth parameter of an upload path for the server.
          progressReporter will be passed three arguments when called:
@@ -21,7 +22,8 @@
       Added L.loopCall.stop() so that user can easily stop L.loopCall
       Added L.symDiff for comparing arrays to determine their symmetric differnce = conjunctive union =
        exclusive-or
-      Restored an updated version of uploadFiles that signals the file uploaded 
+      Restored an updated version of uploadFiles that signals the file uploaded
+      Added secToMinSec
 */
 
 var L = {}
@@ -340,3 +342,19 @@ L.symDiff = function symDiff(arrayA, arrayB){ // dummy paramters NOT referenced 
     }      
 };
 
+/**
+ * Pass in a numerical seconds: it returns a string in the format
+ *  mm : ss, like ...
+ *  35 : 37 in minutes nad seconds
+*/
+L.secToMinSec = (seconds) =>{
+    var min = Math.floor(seconds / 60);
+    var sec = Math.floor(seconds % 60);
+    if(isNaN(min)){min = 0}
+    if(isNaN(sec)){sec = 0}
+    var zeroMin = ((min < 10) ? ("0" + min) : ("" + min));
+    var zeroSec = ((sec < 10) ? ("0" + sec) : ("" + sec));
+    var minSec = zeroMin + ":" + zeroSec;  
+    return minSec;
+};
+//====| END of secToMinSec |====// 
