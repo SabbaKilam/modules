@@ -24,8 +24,6 @@
        exclusive-or
       Restored an updated version of uploadFiles that signals the file uploaded
       Added secToMinSec
-      Added runQualifiedFunctions that mirrors runQualifiedMethods using different parameters,
-        namely: functionQualifiers, mode, view, controller
 */
 
 var L = {}
@@ -99,33 +97,6 @@ L.runQualifiedMethods = function(functionQualifiers, object, runNextUpdate){
   }
 }
 
-L.runQualifiedFunctions = function(functionQualifiers, model, view, controller){
-  Object
-    .keys(functionQualifiers)
-    .filter(qualifyFunction)
-    .forEach(runFunction) 
-  //-----| helpers |-----//
-  function qualifyFunction(functionName){
-    const isQualified = functionQualifiers[functionName].every( qualifier => qualifier) &&
-                        !!functionQualifiers[functionName].length
-    return isQualified
-  }
-  function runFunction(functionName){
-    if(typeof controller[functionName] === 'function'){
-      controller[functionName](model)        
-    }
-    /**
-      If the prefix of this function's name is 'set' (for updating the MODEL),
-      and there is a similarly named function with a prefix of 'show' (for updating the VIEW),
-      then run the 'show' version as well.
-    */
-    let prefix = functionName.slice(0,3)
-    let newFunctionName = 'show' + functionName.slice(3)
-    if(prefix === 'set' && typeof controller[newFunctionName] === 'function'){
-      controller[newFunctionName](view)
-    }
-  }
-}
 /**
   Use a php script that reads contents of file from $_POST['contents'] that was convert by client
   as DataURL, and expects filename and uploadPath from: $_POST['filename'] and $_POST['uploadPath']
