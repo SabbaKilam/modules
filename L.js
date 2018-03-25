@@ -22,7 +22,7 @@
       Added L.loopCall.stop() so that user can easily stop L.loopCall
       Added L.symDiff for comparing arrays to determine their symmetric differnce = conjunctive union =
        exclusive-or
-      Restored an updated version of uploadFiles that signals the file uploaded
+      Restored an updated version of uploadFiles that signals the final file has uploaded
       Added secToMinSec
       Added runQualifiedFunctions that mirrors runQualifiedMethods using different parameters,
         namely: functionQualifiers, mode, view, controller
