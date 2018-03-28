@@ -25,7 +25,7 @@
       Restored an updated version of uploadFiles that signals the final file has uploaded
       Added secToMinSec
       Added runQualifiedFunctions that mirrors runQualifiedMethods using different parameters,
-        namely: functionQualifiers, mode, view, controller
+        namely: functionQualifiers, model, view, controller
 */
 
 var L = {}
