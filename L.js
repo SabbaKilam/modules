@@ -89,14 +89,17 @@ L.attachNewElement = function(tagname, id, view){
           view[newElement.id] = newElement
           newElement.styles = L.styles.bind(newElement) // attach L's styles() method here
           newElement.attribs = L.attribs.bind(newElement) // attach L's attribs() method here
+          return newElement
       }      
     }
     else{
-      console.log(`Error: view needs to be an object`)      
+      console.log(`Error: view needs to be an object`)
+      return
     }
   }
   catch(e){
     console.log(`Error in L.attachNewElement: ${e}`)
+    return
   }
 }
 ///////////////| END of L.attachNewElement |/////////////
