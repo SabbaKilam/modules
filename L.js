@@ -70,14 +70,14 @@ L.attachNewElement = function(tagname, id, view){
     return
   }
   try{
-    if(typeof tagname === 'string'){
+    if(typeof tagname === `string`){
       var newElement = document.createElement(tagname)
     }
     else{
       console.log(`Error: tagname needs to be a string`)
       return
     }
-    if(typeof id === 'string'){
+    if(typeof id === `string`){
       newElement.id = id
     }
     else{
@@ -85,12 +85,12 @@ L.attachNewElement = function(tagname, id, view){
       return
     }
     if(view.toString() === `[object Object]`){
-      if(newElement.id){
+      //if(newElement.id){
           view[newElement.id] = newElement
           newElement.styles = L.styles.bind(newElement) // attach L's styles() method here
           newElement.attribs = L.attribs.bind(newElement) // attach L's attribs() method here
           return newElement
-      }      
+      //}      
     }
     else{
       console.log(`Error: view needs to be an object`)
