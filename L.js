@@ -66,7 +66,6 @@ L.attachAllElementsById = function(here){
 L.attachNewElement = function(tagname, id, view){
   if(arguments.length !== 3){
     console.log(`Error: requires 3 arguments: tagname, id, view`)
-    console.log(L.attachNewElement.toString())
     return
   }
   try{
@@ -85,12 +84,10 @@ L.attachNewElement = function(tagname, id, view){
       return
     }
     if(view.toString() === `[object Object]`){
-      //if(newElement.id){
-          view[newElement.id] = newElement
-          newElement.styles = L.styles.bind(newElement) // attach L's styles() method here
-          newElement.attribs = L.attribs.bind(newElement) // attach L's attribs() method here
-          return newElement
-      //}      
+      view[newElement.id] = newElement
+      newElement.styles = L.styles.bind(newElement) // attach L's styles() method here
+      newElement.attribs = L.attribs.bind(newElement) // attach L's attribs() method here
+      return newElement
     }
     else{
       console.log(`Error: view needs to be an object`)
