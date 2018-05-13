@@ -65,14 +65,41 @@ L.attachAllElementsById = function(here){
 
 L.attachNewElement = function(tagname, id, view){
   if(arguments.length !== 3){
-    console.log(`Error: requires 3 argumnents: tagname, id, view`)
+    console.log(`Error: requires 3 arguments: tagname, id, view`)
+    console.log(L.attachNewElement.toString())
     return
   }
-  try{}
-  catch(e){}
-  const newElement = document.createElement(tagname)
-  
+  try{
+    if(typeof tagname === 'string'){
+      var newElement = document.createElement(tagname)
+    }
+    else{
+      console.log(`Error: tagname needs to be a string`)
+      return
+    }
+    if(typeof id === 'string'){
+      newElement.id = id
+    }
+    else{
+      console.log(`Error: id needs to be a string`)
+      return
+    }
+    if(view.toString() === `[object Object]`){
+      if(newElement.id){
+          view[newElement.id] = newElement
+          newElement.styles = L.styles.bind(newElement) // attach L's styles() method here
+          newElement.attribs = L.attribs.bind(newElement) // attach L's attribs() method here
+      }      
+    }
+    else{
+      console.log(`Error: view needs to be an object`)      
+    }
+  }
+  catch(e){
+    console.log(`Error in L.attachNewElement: ${e}`)
+  }
 }
+///////////////| END of L.attachNewElement |/////////////
 
 L.noPinchZoom = function(){
   window.ontouchstart = function(eventObject){
