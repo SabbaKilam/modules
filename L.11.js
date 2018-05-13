@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: May 12, 2018 
+  Revised: March 24, 2018 
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -26,10 +26,6 @@
       Added secToMinSec
       Added runQualifiedFunctions that mirrors runQualifiedMethods using different parameters,
         namely: functionQualifiers, model, view, controller
-      Added attachNewElement(tagname, id, view). Create new element, gives it an id and
-        attaches it to object provided:
-        L.attachNewElement(`div`, `picHolder`, view)
-        
 */
 
 var L = {}
@@ -61,17 +57,6 @@ L.attachAllElementsById = function(here){
           element.attribs = L.attribs.bind(element) // attach L's attribs() method here
       }
   })
-}
-
-L.attachNewElement = function(tagname, id, view){
-  if(arguments.length !== 3){
-    console.log(`Error: requires 3 argumnents: tagname, id, view`)
-    return
-  }
-  try{}
-  catch(e){}
-  const newElement = document.createElement(tagname)
-  
 }
 
 L.noPinchZoom = function(){
