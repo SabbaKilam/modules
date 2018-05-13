@@ -63,6 +63,13 @@ L.attachAllElementsById = function(here){
   })
 }
 
+/**
+  L.attachNewElement(string tagname, string id, object view) ...
+  ... creates a new element of type "tagname" given as the first argument,
+  and gives it the id "id" given as the second argument.
+  The third argument is the view object where this new reference will be attached.
+  The element can then be referenced as view.id.
+*/
 L.attachNewElement = function(tagname, id, view){
   if(arguments.length !== 3){
     console.log(`Error: requires 3 arguments: tagname, id, view`)
