@@ -1,1 +1,1 @@
-"{delay: 2000, hue: 'teal'}"
+"{"hue":"teal","delay":2000}"
