@@ -62,7 +62,7 @@ L.attachAllElementsById = function(here){
       }
   })
 }
-
+///////////////| START of L.attachNewElement |/////////////
 /**
   L.attachNewElement(string tagname, string id, object view) ...
   ... creates a new element of type "tagname" given as the first argument,
