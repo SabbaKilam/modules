@@ -1,1 +1,1 @@
-{"delay":5000,"hue":"teal"}
+{"delay":2000,"hue":"lightblue"}
