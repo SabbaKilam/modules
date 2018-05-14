@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: May 14, 2018 
+  Revised: May 12, 2018 
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -29,7 +29,7 @@
       Added attachNewElement(tagname, id, view). Create new element, gives it an id and
         attaches it to object provided:
         L.attachNewElement(`div`, `picHolder`, view)
-      Added createListMixer and scrammbleThis, which depends on createListMixer
+        
 */
 
 var L = {}
@@ -435,112 +435,4 @@ L.secToMinSec = (seconds) =>{
     var minSec = zeroMin + ":" + zeroSec;  
     return minSec;
 };
-//====| END of secToMinSec |====//
-
-///////////////////| START of CreateListMixer |//////////////////////
-/**
-  * CreateListMixer: a factory that creates a function that
-  * returns a random item from collection provided (array or object)
-  * Notes: Example-> var list = ["a", "short", "list"];//three (3) items to test
-  *  		var getRandomItem = CreateListMixer();
-  * 		getRandomItem(list);//returns first of randomized list
-  * 		getRandomItem();//returns next item
-  * 		getRandomItem();//returns next item (last of three)
-  * 		getRandomItem();//new first item from re-randomized list
-  * 
-  *			// a new list;					
-  *			var list2 = { record1: "string", record2: "anotherString", ...};
-  * 		getRandomItem(list2);//returns first of new randomized list2
-  * 		getRandomItem();//etc.
-  * It returns a property name for objects or an array member for arrays;
-  * It returns 'false' if argument of function is not an object
-  * or an array (fails typeof arg === 'object')
-  * 
-*/
-L.CreateListMixer = function(){
-	var	list=[], 
-		randList= [],
-		listLength= 0,
-		itemReturned= null,
-		itemReturnedIndex= -1
-	;
-	return function(){
-		if(arguments[0]){
-			if(typeof arguments[0] === 'object'){
-					list = arguments[0];
-				if({}.toString.call(arguments[0]) === '[object Object]'){
-					list = Object.keys(list);
-				}
-				randList = randomize(list);
-				listLength = list.length;
-			}
-			else{
-				return false;
-			}
-		}
-		//----| no args activity: return next random item |----
-		if(itemReturnedIndex >= listLength-1){
-			do{
-				randList = randomize(list);
-				itemReturnedIndex = -1;
-			}
-			while(randList[itemReturnedIndex +1] === itemReturned);
-		}
-		itemReturnedIndex++;
-		itemReturned = randList[itemReturnedIndex];
-		return itemReturned;
-		//-----helpers-----
-		function randomize(x){
-			var mixedIndexes = [];
-			var randomList = [];
-			randomizeIndexes();
-			return randomList;
-			//----sub helper----
-			function randomizeIndexes(){
-				// random numbers for mixedIndexes
-				while(mixedIndexes.length !== x.length){
-					var match = false;
-					var possibleIndex = (x.length)*Math.random();
-					possibleIndex = Math.floor(possibleIndex);
-					mixedIndexes.forEach(function(m){
-						if(m === possibleIndex){
-							match = true;
-						}
-					});
-					if(!match){
-						mixedIndexes.push(possibleIndex);
-					}
-				}
-				for(var i = 0; i < x.length; i++){
-					var newIndex = mixedIndexes[i];
-					randomList.push(list[newIndex]);
-				}
-			}		
-		}
-	};//===| END returned function |======
-}//===| END enclosing factory function======
-///////////////////| END of CreateListMixer |//////////////////////
-
-///////////////////| START of scrammbleThis |//////////////////////
-/**
-  scrammbleThis: (depends on createListMixer, above)
-  It returns an array of randomly arranged items of the collection provided
-  The argument must be an array, an object, or a string
-  If the argument is an object, a random array of its property names is returned.
-  If the argument is a string, a random array of its characters is returned.
-  If the argument is an array, a random array of its members is returned.
-*/
-L.scrammbleThis = function(collection){
-  if ( !(typeof collection === 'object' || typeof collection === 'string') ){return collection}
-	var mix = L.CreateListMixer();
-  var list = (Object.prototype.toString.call(collection) === '[object Array]')
-              ? collection
-              : (typeof collection === 'string')
-              ? collection.split('')
-              : (typeof collection === 'object') 
-              ? Object.keys(collection)
-              : null   
-  return list.map((m,i,a)=> (i === 0) ? mix(a) : mix())
-}
-///////////////////| END of scrammbleThis |//////////////////////
-
+//====| END of secToMinSec |====// 
