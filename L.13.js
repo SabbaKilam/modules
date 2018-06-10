@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: June 9, 2018 
+  Revised: May 14, 2018 
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -16,13 +16,11 @@
          
       Added sortByExtension that alphabetizes an array of strings 'in place' by filename extension          
       Added arrayStringMatch that matches a collection of string arrays to a search string.
-        later (6-9-2018) included an option for a "maximum array index" to eliminate
-        searching irrelevant fields at the end of the array, such as image name and primary key.
       Added loopCall as a 'better' version of setInterval
       Removed L.attributes. It's a reserved word: an object belonging to DOM elements
        Now it uses L.attribs
       Added L.loopCall.stop() so that user can easily stop L.loopCall
-      Added L.symDiff for comparing arrays to determine their symmetric difference = conjunctive union =
+      Added L.symDiff for comparing arrays to determine their symmetric differnce = conjunctive union =
        exclusive-or
       Restored an updated version of uploadFiles that signals the final file has uploaded
       Added secToMinSec
@@ -32,10 +30,6 @@
         attaches it to object provided:
         L.attachNewElement(`div`, `picHolder`, view)
       Added createListMixer and scrammbleThis, which depends on createListMixer
-      Added sortArrayOfStringArrays, with option of using a "link token" of choice as the 3rd argument
-      Added an optional argument for arrayStringMatch for a maximum array index
-        to eliminate searching irrelevant fields at the end of the array,
-        such as image name and primary key
 */
 
 var L = {}
@@ -300,22 +294,12 @@ regardless of case.
    4. the filter creates a new array after doing this.
    5. final step: return the new array that the filter produced 
 */
-L.arrayStringMatch = function(subString, arrayOfStringArrays, maxIndex){
+L.arrayStringMatch = function(subString, arrayOfStringArrays){
   //============================================================//
   return arrayOfStringArrays.filter(match)
   //-------| Helper function 'match' |---------//
   function match(memberArray){
-    //on 6-9-2018, added option of maximum index to eliminate searching through irrelevant fields
-    let bigString = ''
-    if(maxIndex && typeof maxIndex === "number" && maxIndex > 0){
-      bigString = memberArray
-                    .filter((m,i) => i <= maxIndex)
-                    .join(``)
-                    .toLowerCase()
-    }    
-    else{
-      bigString = memberArray.join(``).toLowerCase()
-    }
+    const bigString = memberArray.join(``).toLowerCase()
     const substringToMatch = subString.toLowerCase()
     return bigString.indexOf(substringToMatch) !== -1   
   }
@@ -439,7 +423,7 @@ L.symDiff = function symDiff(arrayA, arrayB){ // dummy paramters NOT referenced 
 /**
  * Pass in a numerical seconds: it returns a string in the format
  *  mm : ss, like ...
- *  35 : 37 in minutes and seconds
+ *  35 : 37 in minutes nad seconds
 */
 L.secToMinSec = (seconds) =>{
     var min = Math.floor(seconds / 60);
@@ -455,8 +439,8 @@ L.secToMinSec = (seconds) =>{
 
 ///////////////////| START of CreateListMixer |//////////////////////
 /**
-  * CreateListMixer: a factory that creates and returns a function that
-  * returns a random item from the collection (array or object) provided.
+  * CreateListMixer: a factory that creates a function that
+  * returns a random item from collection provided (array or object)
   * Notes: Example-> var list = ["a", "short", "list"];//three (3) items to test
   *  		var getRandomItem = CreateListMixer();
   * 		getRandomItem(list);//returns first of randomized list
@@ -540,8 +524,8 @@ L.CreateListMixer = function(){
 ///////////////////| START of scrammbleThis |//////////////////////
 /**
   scrammbleThis: (depends on createListMixer, above)
-  It returns an array of randomly arranged items of the collection provided.
-  The argument must be an array, an object, or a string.
+  It returns an array of randomly arranged items of the collection provided
+  The argument must be an array, an object, or a string
   If the argument is an object, a random array of its property names is returned.
   If the argument is a string, a random array of its characters is returned.
   If the argument is an array, a random array of its members is returned.
@@ -560,17 +544,3 @@ L.scrammbleThis = function(collection){
 }
 ///////////////////| END of scrammbleThis |//////////////////////
 
-/**
-  Given an array of string arrays, this function returns an alphabetized version
-*/
-L.sortArrayOfStringArrays = function(arrayOfStringArrays, linkToken='```'){
-  //use a unique token (default = triple back-ticks ```) to join the strings of each array of strings
-  const arrayOfStrings = arrayOfStringArrays.map(stringArray => stringArray.join(linkToken))
-  
-  //case-insensitive sort this array of strings, mutating it in place:
-  //https://stackoverflow.com/questions/8996963/how-to-perform-case-insensitive-sorting-in-javascript
-  arrayOfStrings.sort(  (a,b) => a.toLowerCase().localeCompare(b.toLowerCase())  )
-  
-  //return a new array of string arrays after splitting the strings on the unique token
-  return arrayOfStrings.map( string => string.split(linkToken))  
-}
