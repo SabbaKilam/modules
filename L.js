@@ -310,11 +310,11 @@ L.arrayStringMatch = function(subString, arrayOfStringArrays, maxIndex){
     if(maxIndex && typeof maxIndex === "number" && maxIndex > 0){
       bigString = memberArray
                     .filter((m,i) => i <= maxIndex)
-                    .join(``)
+                    .join(` `)              
                     .toLowerCase()
     }    
     else{
-      bigString = memberArray.join(``).toLowerCase()
+      bigString = memberArray.join(` `).toLowerCase()
     }
     const substringToMatch = subString.toLowerCase()
     return bigString.indexOf(substringToMatch) !== -1   
