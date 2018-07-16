@@ -558,6 +558,7 @@ L.scrammbleThis = function(collection){
               : null   
   return list.map((m,i,a)=> (i === 0) ? mix(a) : mix())
 }
+L.scrambleThis = L.scrammbleThis
 ///////////////////| END of scrammbleThis |//////////////////////
 
 /**
