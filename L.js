@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: June 9, 2018 
+  Revised: September 9, 2018 
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -36,6 +36,8 @@
       Added an optional argument for arrayStringMatch for a maximum array index
         to eliminate searching irrelevant fields at the end of the array,
         such as image name and primary key
+      Added L.css to apply a string of "semi-colon" seperated css declarstions all at once to
+        any element with an id. It works only if L.styles in attached to the element.
 */
 
 var L = {}
@@ -56,6 +58,17 @@ L.attribs = function(attributeString){
   
   return this.attribs
 }
+/*
+  L.css depends on L.styles (above)
+*/
+L.css = function(cssString){
+  const cssArray = cssString.split(`;`);
+  for ( let i = cssArray.length; i--; ){ // speed-optimized reverse for loop
+    this.styles(cssArray[i].trim()); // "trim()" is crucial
+  }
+}
+
+///////////////////////////////////// 
 
 L.attachAllElementsById = function(here){
   let allElements = document.getElementsByTagName('*')
@@ -65,6 +78,7 @@ L.attachAllElementsById = function(here){
           here[element.id] = element
           element.styles = L.styles.bind(element) // attach L's styles() method here
           element.attribs = L.attribs.bind(element) // attach L's attribs() method here
+          element.css = L.css.bind(element) // attach L's css() method here. Only works if L.styles is attached
       }
   })
 }
