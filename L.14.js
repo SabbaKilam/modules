@@ -82,28 +82,6 @@ L.attachAllElementsById = function(here){
       }
   })
 }
-///////////////| START of L.addToView |////////////////
-/**
-  Attach an element that has the id provided to the object (usually the view object) provided.
-  This element could now be referenced as a property of the object, and can use 
-  all of the methods (three, so far) used by elements that were attahced using L.attachAllElementsById().
-  Example: L.addToView(`screenA1`, v) ...
-  ... allows us to refer to the element as v.screenA1, and it can use the methods styles, attribs, and css.
-  Example:  v.screenA1.css(`
-              visibility: visible;
-              opacity: 1;
-            `) ...
-  ... uses the css method to add style properties to the element.
-*/
-L.addToView = function( idString, viewObject){
-  const element = document.getElementById(idString)
-  viewObject[idString] = element
-  element.styles = L.styles.bind(element)
-  element.attribs = L.attribs.bind(element)
-  element.css = L.css.bind(element)
-}
-////////////////| END of L.addToView |/////////////////
-
 ///////////////| START of L.attachNewElement |/////////////
 /**
   L.attachNewElement(string tagname, string id, object view) ...
