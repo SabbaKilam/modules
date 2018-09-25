@@ -101,6 +101,8 @@ L.addToView = function( idString, viewObject){
   element.styles = L.styles.bind(element)
   element.attribs = L.attribs.bind(element)
   element.css = L.css.bind(element)
+  
+  return element
 }
 ////////////////| END of L.addToView |/////////////////
 
