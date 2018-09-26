@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: September 9, 2018 
+  Revised: September 25, 2018 
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -38,6 +38,10 @@
         such as image name and primary key
       Added L.css to apply a string of "semi-colon" seperated css declarstions all at once to
         any element with an id. It works only if L.styles in attached to the element.
+      Added L.addToView( idString, viewObject ) to add elements to the view object
+        that are latecomers, or dynamically created after an app first loads. Those elements
+        will then be referenced like all prior ones that are properties of the view object
+
 */
 
 var L = {}
