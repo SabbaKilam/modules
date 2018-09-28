@@ -1,0 +1,97 @@
+* {
+	box-sizing: border-box;
+}
+html{
+	font-size: calc(calc(0.5vh + 0.5vw) + 12px);
+	box-sizing: border-box;
+	tap-highlight-color: rgba(0,0,0,0);	
+	user-select: none;
+	font-family: Helvetica;
+}
+
+html, body {
+	position: fixed;	
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	background-color: lightgray;
+	background-image: linear-gradient(315deg, #aaa, white);
+}
+
+#body{
+	max-width: 700px; /*body acting as app holder*/
+	margin: auto;
+	left: 0;
+	right: 0;
+	background-color: transparent;
+	background-image: none;
+	z-index: 0;
+}
+
+#testFooter{
+	position: absolute;
+	text-align: center;
+	margin: auto;
+	bottom: 0;
+	min-height: 30px;	
+	height: 2.5%;
+	width: 100%;
+	line-height: 1.75;
+	border-radius: 0.5rem;
+	background-color: gray;
+	color: white;
+	cursor: pointer;
+}
+#testFooter:hover{
+	background-color: white;
+	color: black;	
+}
+/*====================| password stuff |=====================*/
+
+#passwordWall{
+    position: fixed;
+    overflow: hidden;
+	height: 100vh;
+	width: 100vw;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    background-image: linear-gradient(-20deg, lightblue, white, lightblue);
+	background-color: black;
+    z-index: 5;
+    visibility: hidden;
+	opacity: 0;
+	transition: all 0.5s ease;
+}
+
+#passwordAssembly{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 33%;
+	width: 98%;
+	max-width: 425px;
+	max-height: 200px;
+	min-height: 70px;
+	border-radius: 1rem;
+	box-shadow: 0.5rem 0.5rem 1rem black;
+	background-color: rgba(200, 200, 200, 0.5);
+}
+
+#password{
+	display: inline-block;
+	position: absolute;
+	height: 25%;
+	min-height: 30px;
+	width: 85%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    border-radius: 0.5rem;
+	text-align: center;
+	font-size: 1.5rem;
+	outline: none;
+}
