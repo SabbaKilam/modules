@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: October 10, 2018 
+  Revised: September 25, 2018 
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -41,7 +41,7 @@
       Added L.addToView( idString, viewObject ) to add elements to the view object
         that are latecomers, or dynamically created after an app first loads. Those elements
         will then be referenced like all prior ones that are properties of the view object
-      Replaced L.noPichZoom's code (@mattis on https://stackoverflow.com/questions/4389932/how-do-you-disable-viewport-zooming-on-mobile-safari)
+
 */
 
 var L = {}
@@ -156,7 +156,7 @@ L.attachNewElement = function(tagname, id, view){
   }
 }
 ///////////////| END of L.attachNewElement |/////////////
-/*
+
 L.noPinchZoom = function(){
   window.ontouchstart = function(eventObject){
     if(eventObject.touches && eventObject.touches.length > 1){
@@ -164,13 +164,6 @@ L.noPinchZoom = function(){
     }
   }  
 }
-*/
-L.noPinchZoom = function(){ //revised from above on 10-10-18
-    document.addEventListener('gesturestart', function (e) {
-      e.preventDefault();
-  });
-}
-
 
 L.runQualifiedMethods = function(functionQualifiers, object, runNextUpdate){
   Object
