@@ -41,7 +41,8 @@
       Added L.addToView( idString, viewObject ) to add elements to the view object
         that are latecomers, or dynamically created after an app first loads. Those elements
         will then be referenced like all prior ones that are properties of the view object
-      Replaced L.noPichZoom's code (@mattis on https://stackoverflow.com/questions/4389932/how-do-you-disable-viewport-zooming-on-mobile-safari)
+      Replaced L.noPinchZoom's code: 
+        (@mattis on https://stackoverflow.com/questions/4389932/how-do-you-disable-viewport-zooming-on-mobile-safari)
 */
 
 var L = {}
@@ -231,6 +232,8 @@ L.runQualifiedFunctions = function(functionQualifiers, model, view, controller){
     }
   }
 }
+//L.runQualifiedHandlers is an alias for L.runQualifiedFunctions
+L.runQualifiedHandlers = L.runQualifiedFunctions
 /**
   Use a php script that reads contents of file from $_POST['contents'] that was convert by client
   as DataURL, and expects filename and uploadPath from: $_POST['filename'] and $_POST['uploadPath']
