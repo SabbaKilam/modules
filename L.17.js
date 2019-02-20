@@ -193,6 +193,7 @@ L.runQualifiedMethods = function(functionQualifiers, object, runNextUpdate){
     if(typeof object[functionName] === 'function'){
       object[functionName]()        
     }
+   
     /**
       If the prefix of this function's name is 'set' (for updating the MODEL),
       and there is a similarly named function with a prefix of 'show' (for updating the VIEW),
@@ -200,6 +201,7 @@ L.runQualifiedMethods = function(functionQualifiers, object, runNextUpdate){
     */
     let prefix = functionName.slice(0,3)
     let newFunctionName = 'show' + functionName.slice(3)
+    
     if(prefix === 'set' && typeof object[newFunctionName] === 'function'){
       object[newFunctionName]()
     }
@@ -231,25 +233,6 @@ L.runQualifiedFunctions = function(functionQualifiers, model, view, controller){
     if(prefix === 'set' && typeof controller[newFunctionName] === 'function'){
       controller[newFunctionName](view)
     }
-    /**
-      Check to see if the function name lacks the "set" and "show" prefixes.
-      If so, add the prefixes and run the "set and "show versons in succession.
-      (you have to first "uppercase" the first letter of the function to comform to camel case)
-      const UCfunctionName = functionName.slice(0,1).toUpperCase() + functionName.slice(1)
-      const setVersion = `set${UCfunctionName}`
-      const showVersion = `show${UCfunctionName}`
-      const setShowPair = typeof controller[setVesrsion] === `function` &&
-                          typeof controller[showVersion] === `function`
-    */
-    const UCfunctionName = functionName.slice(0,1).toUpperCase() + functionName.slice(1)
-    const setVersion = `set${UCfunctionName}`
-    const showVersion = `show${UCfunctionName}`
-    const setShowPair = typeof controller[setVersion] === `function` &&
-                        typeof controller[showVersion] === `function`
-    if(setShowPair){
-      controller[setVersion](model)
-      controller[showVersion](view) 
-    }    
   }
 }
 //L.runQualifiedHandlers is an alias for L.runQualifiedFunctions
