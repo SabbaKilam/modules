@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: February 20, 2019 
+  Revised: October 10, 2018 
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -43,8 +43,6 @@
         will then be referenced like all prior ones that are properties of the view object
       Replaced L.noPinchZoom's code: 
         (@mattis on https://stackoverflow.com/questions/4389932/how-do-you-disable-viewport-zooming-on-mobile-safari)
-      Added L.wheelDelta() for mouse event "wheel." It returns +1 for a negative event property of deltaY, else -1
-      Added L.includedInClass to id-ed elements along with .styles(), .atribs(), and .css()        
 */
 
 var L = {}
@@ -77,21 +75,15 @@ L.css = function(cssString){
 
 ///////////////////////////////////// 
 
-L.includedInClass = function(className){
-  return !! Array.from( document.querySelectorAll(`.${className}`) ).includes(this);
-}
-/////////////////////////////////////
-
-L.attachAllElementsById = function(view){
+L.attachAllElementsById = function(here){
   let allElements = document.getElementsByTagName('*')
   let array = []
-  array.forEach.call(allElements, element => {
+  array.forEach.call(allElements, function(element)  {
       if(element.id){
-        view[element.id] = element
-        element.styles = L.styles.bind(element) // attach L's styles() method here
-        element.attribs = L.attribs.bind(element) // attach L's attribs() method here
-        element.css = L.css.bind(element) // attach L's css() method here. Only works if L.styles is attached
-        element.includedInClass = L.includedInClass.bind(element) //attach L's includedInClass() method here
+          here[element.id] = element
+          element.styles = L.styles.bind(element) // attach L's styles() method here
+          element.attribs = L.attribs.bind(element) // attach L's attribs() method here
+          element.css = L.css.bind(element) // attach L's css() method here. Only works if L.styles is attached
       }
   })
 }
@@ -114,7 +106,6 @@ L.addToView = function( idString, viewObject){
   element.styles = L.styles.bind(element)
   element.attribs = L.attribs.bind(element)
   element.css = L.css.bind(element)
-  element.includedInClass = L.includedInClass.bind(element)   
   
   return element
 }
@@ -153,8 +144,6 @@ L.attachNewElement = function(tagname, id, view){
       newElement.styles = L.styles.bind(newElement) // attach L's styles() method here
       newElement.attribs = L.attribs.bind(newElement) // attach L's attribs() method here
       newElement.css = L.css.bind(newElement) // attach L's css() method here. Only works if L.styles is attached      
-      newElement.includedInClass = L.includedInClass.bind(newElement) //attach L's includedInClass() method here      
-      
       return newElement
     }
     else{
@@ -168,12 +157,21 @@ L.attachNewElement = function(tagname, id, view){
   }
 }
 ///////////////| END of L.attachNewElement |/////////////
-
+/*
+L.noPinchZoom = function(){
+  window.ontouchstart = function(eventObject){
+    if(eventObject.touches && eventObject.touches.length > 1){
+      eventObject.preventDefault();
+    }
+  }  
+}
+*/
 L.noPinchZoom = function(){ //revised from above on 10-10-18
     document.addEventListener('gesturestart', function (e) {
       e.preventDefault();
   });
 }
+
 
 L.runQualifiedMethods = function(functionQualifiers, object, runNextUpdate){
   Object
@@ -236,7 +234,6 @@ L.runQualifiedFunctions = function(functionQualifiers, model, view, controller){
 }
 //L.runQualifiedHandlers is an alias for L.runQualifiedFunctions
 L.runQualifiedHandlers = L.runQualifiedFunctions
-
 /**
   Use a php script that reads contents of file from $_POST['contents'] that was convert by client
   as DataURL, and expects filename and uploadPath from: $_POST['filename'] and $_POST['uploadPath']
@@ -630,9 +627,4 @@ L.sortArrayOfStringArrays = function(arrayOfStringArrays, linkToken='```'){
   
   //return a new array of string arrays after splitting the strings on the unique token
   return arrayOfStrings.map( string => string.split(linkToken))  
-}
-
-L.wheelDelta = (eventObject) => {
-    const e = eventObject; 
-    return (e.deltaY && e.deltaY < 0) ? 1 : -1
 }
