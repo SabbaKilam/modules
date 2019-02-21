@@ -46,6 +46,8 @@
         (@mattis on https://stackoverflow.com/questions/4389932/how-do-you-disable-viewport-zooming-on-mobile-safari)
       Added L.wheelDelta() for mouse event "wheel." It returns +1 for a negative event property of deltaY, else -1
       Added L.includedInClass to id-ed elements along with .styles(), .atribs(), and .css()        
+      Added extra check on L.rubQualifiedFunctions to check for, and run, functions that were name
+        without their prefixes "set" and "show"
 */
 
 var L = {}
