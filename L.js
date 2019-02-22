@@ -654,5 +654,13 @@ L.sortArrayOfStringArrays = function(arrayOfStringArrays, linkToken='```'){
 
 L.wheelDelta = (eventObject) => {
     const e = eventObject; 
-    return (e.deltaY && e.deltaY < 0) ? 1 : -1
+    return (
+    	e.deltaY && (e.deltaY < 0) ?
+    		1 
+    	: e.deltaY && (e.deltaY > 0) ?
+    		-1
+		: 0  		
+    )		
 }
+
+export default L
