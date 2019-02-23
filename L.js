@@ -662,5 +662,3 @@ L.wheelDelta = (eventObject) => {
 		: 0  		
     )		
 }
-
-//export default L
