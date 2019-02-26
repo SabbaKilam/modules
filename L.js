@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: February 20, 2019 
+  Revised: February 26, 2019 
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -48,6 +48,7 @@
       Added L.includedInClass to id-ed elements along with .styles(), .atribs(), and .css()        
       Added extra check on L.runQualifiedFunctions to check for, and run, functions that were named
         without their prefixes "set" and "show"
+      Added a filename "sanitizer" (regex search and replace with empty string) for uploading files after fileReader finishes          
 */
 
 var L = {}
@@ -277,7 +278,8 @@ L.uploadFiles = function(progressReporter, fileElement, phpScriptName, uploadPat
     reader.onload = function(){ // when done ...
       const contents = reader.result // collect the result, and ...
       envelope.stuff('contents', contents) // place it in the envelope along with ...
-      envelope.stuff('filename', file.name) // its filename ...
+	    let filename = file.name.replace(/[\)\(\"\/>|<' \*\^~-\s]+/g, "");
+      envelope.stuff('filename', filename) // its "sanitized" filename ...      
       envelope.stuff('uploadPath', uploadPath) // and its upload path on the server
       
       postman.open(`POST`, phpScriptName)// open up a POST to the server's php script
