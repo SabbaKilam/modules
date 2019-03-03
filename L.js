@@ -670,6 +670,7 @@ L.wheelDelta = (eventObject) => {
 /*
   Returns an array of the merged arrays from the argument list, eliminating duplicates.
   If the argument list includes non-arrays, they are also included, eliminating duplicates.
+  It is also given an alias function name: L.mergeArrays  
 */
 L.concatNoDupes = (...arraysEtc) => {
     return [  ...( new Set( [].concat(...arraysEtc) ) )  ];  
