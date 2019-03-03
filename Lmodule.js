@@ -665,27 +665,7 @@ L.wheelDelta = (eventObject) => {
 		: 0  		
     )		
 }
-//////////////
-/*
-  L.concatNoDupes Returns the merging of two arrays with no duplicates.
-  If either x or y is not an array, a blank array is returned.
-*/
-L.concatNoDupes = (x, y) =>{
-  const realArrays = (
-    ({}.toString.call(x) === `[object Array]` &&
-    {}.toString.call(y) === `[object Array]`) ?
-      true
-    : false
-  );
-  // if x or y is not an array, return an empty array   
-  if ( ! realArrays ){ 
-    return [];
-  }
-  else{
-    //concat, then make into a Set: which automatically deletes duplicates, then spread.
-    return [  ...( new Set( x.concat(y) ) )  ];  
-  }
-}
+
 //////////////////////////////////
 /*
   Returns an array of the merged arrays from the argument list, eliminating duplicates.
@@ -696,5 +676,7 @@ L.concatNoDupes = (...arraysEtc) => {
 }  
 
 //////////////////////////////////
+L.mergeArrays = L.concatNoDupes
 
+////////////////////////////////
 export default L

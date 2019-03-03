@@ -674,5 +674,7 @@ L.wheelDelta = (eventObject) => {
 L.concatNoDupes = (...arraysEtc) => {
     return [  ...( new Set( [].concat(...arraysEtc) ) )  ];  
 }  
+L.mergeArrays = L.concatNoDupes
+
 
 //////////////////////////////////
