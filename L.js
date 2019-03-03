@@ -442,14 +442,14 @@ L.loopCall.stop = () => {
 }
 
 /**
-  Returns an array that is the "mathematical or logical" symmetric difference among or between
-  any number of arrays provided as arguments (usually two). If the order of members is ignored
+  Returns an array that is the "mathematical or logical" symmetric difference between or among
+  any number of arrays provided as arguments (typically two). If the order of members is ignored
   (as is done for mathematical sets), the result acts as the the exclusive-or (XOR), also know as
   the disjunctive union. For the trivial cases of comparing one or two arrays, the result is
   not surprising: for one array, the result is itself: L.symDiff(A, []) =>  A ⊕ [] = A. 
   For two arrays, the result is an array that has only members which are not shared in common:
   L.symDiff(A, B) => A ⊕ B .
-  When comparing more than two arrays, the result may ne surprising. The proper result can be verified 
+  When comparing more than two arrays, the result may be surprising. The proper result can be verified 
   by comparing only two at a time: L.symDiff(A, B, C) => A ⊕ B ⊕ C = (A ⊕ B) ⊕ C
 */
 L.symDiff = function symDiff(arrayA, arrayB){ // dummy paramters NOT referenced in body of the function
