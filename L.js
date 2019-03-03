@@ -1,7 +1,7 @@
 /**
   Author:  Abbas Abdulmalik
   Created: ~ May, 2017
-  Revised: March 1, 2019
+  Revised: March 3, 2019
   Original Filename: L.js 
   Purpose: a small (but growing) personal re-usable js library for a simple MVC architecture
   Notes: Now qualifyFunction helper doesn't return true for empty arrays (no vacuous truth)
@@ -49,7 +49,7 @@
       Added extra check on L.runQualifiedFunctions to check for, and run, functions that were named
         without their prefixes "set" and "show"
       Added a filename "sanitizer" (regex search and replace with empty string) for uploading files after fileReader finishes          
-      Added L.concatNoDupes which returns the merging of two arrays with no duplicates.
+      Added L.concatNoDupes, which returns the merging of arrays and other arguments into a single array, eliminating duplicates
 
 */
 
@@ -668,22 +668,11 @@ L.wheelDelta = (eventObject) => {
 }
 //////////////
 /*
-  L.concatNoDupes Returns the merging of two arrays with no duplicates.
-  If either x or y is not an array, a blank array is returned.
+  Returns an array of the merged arrays form the argument list, eliminating duplicates.
+  If the argument list includes non-arrays, they are also included, eliminating duplicates.
 */
-L.concatNoDupes = (x, y) =>{
-  const realArrays = (
-    ({}.toString.call(x) === `[object Array]` &&
-    {}.toString.call(y) === `[object Array]`) ?
-      true
-    : false
-  );
-  // if x or y is not an array, return an empty array   
-  if ( ! realArrays ){ 
-    return [];
-  }
-  else{
-    //concat, then make into a Set: which automatically deletes duplicates, then spread.
-    return [  ...( new Set( x.concat(y) ) )  ];  
-  }
-}
+L.concatNoDupes = (...arraysEtc) => {
+    return [  ...( new Set( [].concat(...arraysEtc) ) )  ];  
+}  
+
+//////////////////////////////////
